@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "template.haukkana"
+        applicationId "kide.haukkana"
         minSdkVersion 23
         targetSdkVersion 24
         versionCode 1
@@ -25,5 +25,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     testCompile 'junit:junit:4.12'
 }

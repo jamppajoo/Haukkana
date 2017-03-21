@@ -1,4 +1,4 @@
-package template.haukkana;
+package kide.haukkana;
 
 import org.junit.Test;
 
