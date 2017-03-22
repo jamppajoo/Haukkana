@@ -1,18 +1,24 @@
 package kide.haukkana;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -53,11 +59,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
 
         }
+
         mMap.setMyLocationEnabled(true);
         // Add a marker in Sydney and move the camera
-        LatLng oulu = new LatLng(65, 24);
+        LatLng oulu = new LatLng(65.0126, 25.4715);
         mMap.addMarker(new MarkerOptions().position(oulu).title("Marker in Oulu"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(oulu));
+
+        LocationManager locMan = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+
+        Criteria crit = new Criteria();
+
+        Location loc = locMan.getLastKnownLocation(locMan.getBestProvider(crit, false));
+
+        CameraPosition camPos = new CameraPosition.Builder()
+
+                .target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+
+                .zoom(12.8f)
+
+                .build();
+
+        CameraUpdate camUpdate = CameraUpdateFactory.newCameraPosition(camPos);
+
+        mMap.moveCamera(camUpdate);
+
     }
 
 
