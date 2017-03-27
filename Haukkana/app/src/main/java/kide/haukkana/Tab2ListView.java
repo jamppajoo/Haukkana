@@ -2,6 +2,8 @@ package kide.haukkana;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -34,6 +37,7 @@ public class Tab2ListView extends Fragment  {
     ListView listView;
     Context context;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.tab2listview, container, false);
@@ -50,16 +54,20 @@ public class Tab2ListView extends Fragment  {
 
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, (List<String>) listView);
-        //listView.setAdapter(adapter);
-
-
         listView.setAdapter(new ImageAdapter(getActivity().getApplicationContext(),storeName,storeInfo));
-        /*ImageAdapter IA = new ImageAdapter(getContext(),storeName,storeInfo);
 
-        listView.setAdapter(IA);
-*/
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
+                String message = "abc";
+                intent.putExtra("Shit", message);
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
     @Deprecated
@@ -74,6 +82,7 @@ class ImageAdapter extends BaseAdapter {
     private Context context;
     private final ArrayList messages;
     private final ArrayList dates;
+
 
     public ImageAdapter(Context context, ArrayList messages, ArrayList dates)
     {
@@ -125,5 +134,3 @@ class ImageAdapter extends BaseAdapter {
     }
 
 }
-
-
