@@ -9,12 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Item" />
+        android:text="Item"
+        android:textColor="@color/itemListColor"/>
 
     <TextView
         android:id="@+id/subItemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="subitem" />
+        android:text="subitem"
+        android:textColor="@color/itemListColor"/>
 </LinearLayout>
