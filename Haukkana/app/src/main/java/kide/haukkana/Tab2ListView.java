@@ -8,6 +8,8 @@ import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatCallback;
 import android.util.Log;
@@ -38,9 +40,10 @@ public class Tab2ListView extends Fragment  {
     Context context;
 
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.tab2listview, container, false);
+
 
 
         storeName.add("Prisma Linnanmaa");
@@ -49,7 +52,6 @@ public class Tab2ListView extends Fragment  {
         storeInfo.add("1.0km Away");
         storeName.add("Prisma Limingantulli");
         storeInfo.add("19.2km Away");
-        Log.d("Tab2ListView ","A");
 
 
 
@@ -59,12 +61,29 @@ public class Tab2ListView extends Fragment  {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // Create new fragment and transaction
+                Fragment fragment = new Tab3ShopInfo();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.replace(R.id.container, fragment);
+
+                transaction.isAddToBackStackAllowed();
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+                Log.d("OnItemClick",fragment.toString());
+                /*Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
                 String message = "abc";
                 intent.putExtra("Shit", message);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
