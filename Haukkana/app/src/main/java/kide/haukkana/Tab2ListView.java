@@ -52,6 +52,8 @@ public class Tab2ListView extends Fragment  {
         storeInfo.add("1.0km Away");
         storeName.add("Prisma Limingantulli");
         storeInfo.add("19.2km Away");
+        storeName.add("Jusun Juusto ja SISSI");
+        storeInfo.add("0.0km Away");
 
 
         //Show listView
