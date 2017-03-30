@@ -12,6 +12,7 @@ import android.view.ViewGroup;
  */
 
 public class Tab3ShopInfo extends Fragment{
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab3shopinfo, container, false);

@@ -35,9 +35,11 @@ public class Tab2ListView extends Fragment  {
 
     ArrayList<String> storeName = new ArrayList<>();
     ArrayList<String> storeInfo = new ArrayList<>();
-    //ArrayAdapter<String> adapter;
     ListView listView;
     Context context;
+    Fragment fragment;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -57,33 +59,20 @@ public class Tab2ListView extends Fragment  {
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         listView.setAdapter(new ImageAdapter(getActivity().getApplicationContext(),storeName,storeInfo));
+        fragmentManager = getFragmentManager();
+        fragmentTransaction = getFragmentManager().beginTransaction();
+
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Create new fragment and transaction
-                Fragment fragment = new Tab3ShopInfo();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.replace(R.id.container, fragment);
-
-                transaction.isAddToBackStackAllowed();
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
-                Log.d("OnItemClick",fragment.toString());
-                /*Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
+                Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
                 String message = "abc";
                 intent.putExtra("Shit", message);
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 

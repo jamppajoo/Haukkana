@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
 
+
     }
 
 
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+        /*
         if (getFragmentManager().getBackStackEntryCount() > 0) {
 
             Log.d("ONBACKPRESSED", "ASD");
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("ONBACKPRESSED", "ASD22");
             //super.onBackPressed();
-        }
+        }*/
     }
 
     /**
@@ -116,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     Tab2ListView tab2 = new Tab2ListView();
                     return tab2;
-                case 2:
-                    Tab3ShopInfo tab3 = new Tab3ShopInfo();
-                    return tab3;
                 default:
                     return null;
 
@@ -138,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
                     return "MapsView";
                 case 1:
                     return "ListView";
-                case 2:
-                    return "ShopView";
             }
             return null;
         }
