@@ -37,7 +37,6 @@ public class Tab2ListView extends Fragment  {
     ArrayList<String> storeInfo = new ArrayList<>();
     ListView listView;
     Context context;
-    Fragment fragment;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
@@ -46,8 +45,7 @@ public class Tab2ListView extends Fragment  {
 
         View rootView = inflater.inflate(R.layout.tab2listview, container, false);
 
-
-
+        //Add stuff to Arraylists
         storeName.add("Prisma Linnanmaa");
         storeInfo.add("2.2km Away");
         storeName.add("S-Market Kaketsu");
@@ -56,18 +54,15 @@ public class Tab2ListView extends Fragment  {
         storeInfo.add("19.2km Away");
 
 
-
+        //Show listView
         listView = (ListView) rootView.findViewById(R.id.listView);
+        //Set adapter to listview and send ArrayList to it
         listView.setAdapter(new ImageAdapter(getActivity().getApplicationContext(),storeName,storeInfo));
-        fragmentManager = getFragmentManager();
-        fragmentTransaction = getFragmentManager().beginTransaction();
 
-
-
+        //If listview item is clicked, start new activity and send temp messages to it
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-
 
                 Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
                 String message = "abc";
@@ -85,40 +80,42 @@ public class Tab2ListView extends Fragment  {
     }
 }
 
+//ImageAdapter gets Arraylists from Tab2ListView class and shows them
 class ImageAdapter extends BaseAdapter {
 
     private Context context;
-    private final ArrayList messages;
-    private final ArrayList dates;
+    private final ArrayList storeName;
+    private final ArrayList storeInfo;
 
-
-    public ImageAdapter(Context context, ArrayList messages, ArrayList dates)
+    public ImageAdapter(Context context, ArrayList storeName, ArrayList storeInfo)
     {
 
         this.context = context;
-        this.messages = messages;
-        this.dates = dates;
+        this.storeName = storeName;
+        this.storeInfo = storeInfo;
 
     }
 
+    //Does magic with listview and combines it with listitem, which has two textviews: itemTextView
+    //and subItemTextViews
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Log.d("ASD","ASD");
-
         View linearLayout;
 
         if(convertView ==null)
         {
+            //Get listitem.xml file
             linearLayout = new View(context);
             linearLayout = inflater.inflate(R.layout.listitem, null);
 
-            TextView message = (TextView) linearLayout.findViewById(R.id.itemTextView);
-            TextView date = (TextView) linearLayout.findViewById(R.id.subItemTextView);
+            //Assing messages to it, like "Prisma Limingantulli" and "2.2km away"
+            TextView finalStoreName = (TextView) linearLayout.findViewById(R.id.itemTextView);
+            TextView finalStoreInfo = (TextView) linearLayout.findViewById(R.id.subItemTextView);
 
-            message.setText(messages.get(position).toString());
-            date.setText(dates.get(position).toString());
+            finalStoreName.setText(storeName.get(position).toString());
+            finalStoreInfo.setText(storeInfo.get(position).toString());
         }
         else
             linearLayout = (View) convertView;
@@ -128,7 +125,7 @@ class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return messages.size();
+        return storeName.size();
     }
 
     @Override

@@ -34,8 +34,8 @@ public class Tab1MapsView extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1mapsview, container, false);
 
-        /*SupportMapFragment mapFragment = (SupportMapFragment) findFragmentById(R.id.mapView);
-        mapFragment.getMapAsync(this);*/
+        //SupportMapFragment mapFragment = (SupportMapFragment) findFragmentById(R.id.mapView);
+        //mapFragment.getMapAsync(this);
 
         return rootView;
     }
