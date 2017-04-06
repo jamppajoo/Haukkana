@@ -1,6 +1,7 @@
 package kide.haukkana;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -41,8 +44,14 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<String> storeName = new ArrayList<>();
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
+    ArrayList<Marker> markers = new ArrayList<>();
 
     LatLng userLatLng;
+
+    Location userLocation = new Location("");
+    Location markerLocation = new Location("");
+
+    double distanceToMarker;
 
 
         @Override
@@ -71,7 +80,7 @@ public class Tab1MapsView extends Fragment  {
             Location location = service.getLastKnownLocation(provider);
             userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
 
-            Log.d("ASD",userLatLng.toString());
+            Log.e("ASD",userLatLng.toString());
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -93,7 +102,19 @@ public class Tab1MapsView extends Fragment  {
                     @Override
                     public void onMyLocationChange (Location location) {
                         userLatLng = new LatLng (location.getLatitude(), location.getLongitude());
-                        Log.d("ASD",userLatLng.toString());
+                        for(int i = 0; i < storeID.size();i++) {
+
+                            markerLocation.setLatitude(storeLan.get(i));
+                            markerLocation.setLongitude(storeLng.get(i));
+                            userLocation.setLatitude(userLatLng.latitude);
+                            userLocation.setLongitude(userLatLng.longitude);
+
+                            distanceToMarker = markerLocation.distanceTo(userLocation);
+
+                            markers.get(i).setSnippet(String.format("%.2f", distanceToMarker / 1000) + " km");
+                            Log.e("ASD", userLatLng.toString());
+                        }
+
                     }
                 };
                 googleMap.setOnMyLocationChangeListener(myLocationChangeListener);
@@ -108,24 +129,31 @@ public class Tab1MapsView extends Fragment  {
 
                 for(int i = 0; i < storeID.size();i++)
                 {
-                    double distanceToMarker = 0;
 
-                    Location markerLocation = new Location("");
-                    markerLocation.setLatitude(storeLan.get(i));
-                    markerLocation.setLongitude(storeLng.get(i));
-
-                    Location userLocation = new Location("");
                     userLocation.setLatitude(userLatLng.latitude);
                     userLocation.setLongitude(userLatLng.longitude);
 
                     distanceToMarker = markerLocation.distanceTo(userLocation);
 
-                    Log.d("ASD"," distance: " + distanceToMarker);
+                    Log.e("ASD"," distance: " + distanceToMarker);
 
                     LatLng Test = new LatLng(storeLan.get(i), storeLng.get(i));
 
-                    googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet(distanceToMarker + "m"));
+                   Marker marker =  googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet(String.format("%.2f", distanceToMarker / 1000)+ " km"));
+                    markers.add(marker);
+
+                    googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            Intent intent1 = new Intent(getActivity().getApplicationContext(), ShopinfoActivity.class);
+                            String title = marker.getTitle();
+                            intent1.putExtra("shopID", marker.getId());
+                            startActivity(intent1);
+                        }
+                    });
+
                 }
+
 
 
                 // For zooming automatically to the location of the marker
@@ -135,7 +163,9 @@ public class Tab1MapsView extends Fragment  {
         });
 
 
-        return rootView;
+
+
+            return rootView;
     }
 
     @Override
