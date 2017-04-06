@@ -2,10 +2,12 @@ package kide.haukkana;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Debug;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 
 /**
@@ -29,6 +31,13 @@ import java.util.Map;
 public class Tab1MapsView extends Fragment  {
     private GoogleMap googleMap;
     MapView mMapView;
+
+    ArrayList<Integer> storeID = new ArrayList<>();
+    ArrayList<String> storeName = new ArrayList<>();
+    ArrayList<Double> storeLan = new ArrayList<>();
+    ArrayList<Double> storeLon = new ArrayList<>();
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +47,8 @@ public class Tab1MapsView extends Fragment  {
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+
+        testDataPushes();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -64,7 +75,17 @@ public class Tab1MapsView extends Fragment  {
 
                 // For dropping a marker at a point on the Map
                 LatLng oulu = new LatLng(65.012360, 25.468160);
-                googleMap.addMarker(new MarkerOptions().position(oulu).title("Marker Title").snippet("Marker Description"));
+
+                for(int i = 0; i < storeID.size();i++)
+                {
+                    double distanceToMarker = 0;
+
+                    LatLng Test = new LatLng(storeLan.get(i), storeLon.get(i));
+
+
+
+                    googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet("Test"));
+                }
 
 
 
@@ -73,6 +94,7 @@ public class Tab1MapsView extends Fragment  {
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+
 
         return rootView;
     }
@@ -101,4 +123,19 @@ public class Tab1MapsView extends Fragment  {
         mMapView.onLowMemory();
     }
 
+    public void testDataPushes(){
+        storeID.add(0);
+        storeName.add("Prisma Limingantulli");
+        storeLan.add(64.994249);
+        storeLon.add(25.461760);
+        storeID.add(1);
+        storeName.add("Oulu");
+        storeLan.add(65.012360);
+        storeLon.add(25.468160);
+        storeID.add(2);
+        storeName.add("Jammun kämppä :D");
+        storeLan.add(64.997768);
+        storeLon.add(25.517576);
+
+    }
 }
