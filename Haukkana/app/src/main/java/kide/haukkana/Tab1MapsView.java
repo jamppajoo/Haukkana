@@ -2,6 +2,9 @@ package kide.haukkana;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Debug;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 
 /**
  * Created by Jammu on 22.3.2017.
@@ -35,10 +40,12 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<Integer> storeID = new ArrayList<>();
     ArrayList<String> storeName = new ArrayList<>();
     ArrayList<Double> storeLan = new ArrayList<>();
-    ArrayList<Double> storeLon = new ArrayList<>();
+    ArrayList<Double> storeLng = new ArrayList<>();
+
+    LatLng userLatLng;
 
 
-    @Override
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1mapsview, container, false);
@@ -48,13 +55,23 @@ public class Tab1MapsView extends Fragment  {
 
         mMapView.onResume(); // needed to get the map to display immediately
 
-        testDataPushes();
+
+
+            testDataPushes();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+            LocationManager service = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String provider = service.getBestProvider(criteria, false);
+            Location location = service.getLastKnownLocation(provider);
+            userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+
+            Log.d("ASD",userLatLng.toString());
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -64,29 +81,51 @@ public class Tab1MapsView extends Fragment  {
                 // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
-
-
-                } else {
+                }
+                else {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
                     // Show rationale and request permission.
                     mMap.setMyLocationEnabled(true);
 
                 }
 
+                GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange (Location location) {
+                        userLatLng = new LatLng (location.getLatitude(), location.getLongitude());
+                        Log.d("ASD",userLatLng.toString());
+                    }
+                };
+                googleMap.setOnMyLocationChangeListener(myLocationChangeListener);
+
+
+
+
                 // For dropping a marker at a point on the Map
                 LatLng oulu = new LatLng(65.012360, 25.468160);
+
+
 
                 for(int i = 0; i < storeID.size();i++)
                 {
                     double distanceToMarker = 0;
 
-                    LatLng Test = new LatLng(storeLan.get(i), storeLon.get(i));
+                    Location markerLocation = new Location("");
+                    markerLocation.setLatitude(storeLan.get(i));
+                    markerLocation.setLongitude(storeLng.get(i));
 
+                    Location userLocation = new Location("");
+                    userLocation.setLatitude(userLatLng.latitude);
+                    userLocation.setLongitude(userLatLng.longitude);
 
+                    distanceToMarker = markerLocation.distanceTo(userLocation);
 
-                    googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet("Test"));
+                    Log.d("ASD"," distance: " + distanceToMarker);
+
+                    LatLng Test = new LatLng(storeLan.get(i), storeLng.get(i));
+
+                    googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet(distanceToMarker + "m"));
                 }
-
 
 
                 // For zooming automatically to the location of the marker
@@ -127,15 +166,15 @@ public class Tab1MapsView extends Fragment  {
         storeID.add(0);
         storeName.add("Prisma Limingantulli");
         storeLan.add(64.994249);
-        storeLon.add(25.461760);
+        storeLng.add(25.461760);
         storeID.add(1);
         storeName.add("Oulu");
         storeLan.add(65.012360);
-        storeLon.add(25.468160);
+        storeLng.add(25.468160);
         storeID.add(2);
         storeName.add("Jammun kämppä :D");
         storeLan.add(64.997768);
-        storeLon.add(25.517576);
+        storeLng.add(25.517576);
 
     }
 }
