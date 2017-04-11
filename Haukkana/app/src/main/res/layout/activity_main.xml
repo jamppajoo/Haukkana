@@ -36,7 +36,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="right"
-                android:src="@drawable/ic_test2" />
+                android:src="@drawable/haukkana_ylavalikko"
+                android:layout_alignParentBottom="true" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
