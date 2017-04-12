@@ -3,6 +3,7 @@ package kide.haukkana;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,8 +23,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -87,6 +90,22 @@ public class Tab1MapsView extends Fragment  {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
+                //boolean addedStyle = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
+
+                try {
+                    boolean success = googleMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    getActivity(), R.raw.style_json));
+                    if (!success) {
+                        Log.e("ASD", "Style parsing failed.");
+                    }
+                } catch (Resources.NotFoundException e) {
+                    Log.e("ASD", "Can't find style. Error: ", e);
+                }
+
+                //if(!addedStyle)
+                  //  Log.e("ASD"," Style parsing failed");
+
                 // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
@@ -139,7 +158,10 @@ public class Tab1MapsView extends Fragment  {
 
                     LatLng Test = new LatLng(storeLan.get(i), storeLng.get(i));
 
-                   Marker marker =  googleMap.addMarker(new MarkerOptions().position(Test).title(storeName.get(i)).snippet(String.format("%.2f", distanceToMarker / 1000)+ " km"));
+                   Marker marker =  googleMap.addMarker(new MarkerOptions()
+                           .position(Test).title(storeName.get(i))
+                           .snippet(String.format("%.2f", distanceToMarker / 1000)+ " km")
+                           .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_test2)));
                     markers.add(marker);
 
                     googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
