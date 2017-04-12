@@ -82,19 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    public void onBackPressed() {
-        /*
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-
-            Log.d("ONBACKPRESSED", "ASD");
-            //getFragmentManager().popBackStack();
-        } else {
-            Log.d("ONBACKPRESSED", "ASD22");
-            //super.onBackPressed();
-        }*/
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */

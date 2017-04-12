@@ -69,7 +69,7 @@ public class Tab1MapsView extends Fragment  {
 
 
 
-            testDataPushes();
+            testDataGet();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -162,14 +162,14 @@ public class Tab1MapsView extends Fragment  {
                            .position(Test).title(storeName.get(i))
                            .snippet(String.format("%.2f", distanceToMarker / 1000)+ " km")
                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_test2)));
+                    marker.setTag(storeID.get(i));
                     markers.add(marker);
 
                     googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                         @Override
                         public void onInfoWindowClick(Marker marker) {
                             Intent intent1 = new Intent(getActivity().getApplicationContext(), ShopinfoActivity.class);
-                            String title = marker.getTitle();
-                            intent1.putExtra("shopID", marker.getId());
+                            intent1.putExtra("shopID", marker.getTag().toString());
                             startActivity(intent1);
                         }
                     });
@@ -214,19 +214,13 @@ public class Tab1MapsView extends Fragment  {
         mMapView.onLowMemory();
     }
 
-    public void testDataPushes(){
-        storeID.add(0);
-        storeName.add("Prisma Limingantulli");
-        storeLan.add(64.994249);
-        storeLng.add(25.461760);
-        storeID.add(1);
-        storeName.add("Oulu");
-        storeLan.add(65.012360);
-        storeLng.add(25.468160);
-        storeID.add(2);
-        storeName.add("Jammun kämppä :D");
-        storeLan.add(64.997768);
-        storeLng.add(25.517576);
+    public void testDataGet(){
+        BackEndCommunication BC = new BackEndCommunication();
+
+        storeID = BC.storeID;
+        storeLng = BC.storeLng;
+        storeLan = BC.storeLan;
+        storeName = BC.storeName;
 
     }
 }

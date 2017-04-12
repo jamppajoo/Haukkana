@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="kide.haukkana.ShopinfoActivity">
 
+
+    <TextView
+        android:id="@+id/shopID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ShopID" />
+
+    <TextView
+        android:id="@+id/shopName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="StoreName"
+        android:layout_below="@+id/shopID"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/shopLan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Store Langitude"
+        android:layout_below="@+id/shopName"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/shopLng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shopLan"
+        android:text="Store Longitude" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jotain infoo kaupasta"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="16dp" />
-</android.support.constraint.ConstraintLayout>
+        android:text="Infoo kaupasta"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:layout_below="@+id/shopID"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="126dp" />
+
+</RelativeLayout>
