@@ -78,16 +78,17 @@ public class Tab1MapsView extends Fragment  {
             Criteria criteria = new Criteria();
             String provider = service.getBestProvider(criteria, false);
             Location location = service.getLastKnownLocation(provider);
-            userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+            try{
+                userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+            }catch (NullPointerException e){
 
+                Log.e("ASD", "" +e);
+            }
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-
-                //boolean addedStyle = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
-
                 try {
                     boolean success = googleMap.setMapStyle(
                             MapStyleOptions.loadRawResourceStyle(
@@ -99,10 +100,6 @@ public class Tab1MapsView extends Fragment  {
                     Log.e("ASD", "Can't find style. Error: ", e);
                 }
 
-                //if(!addedStyle)
-                  //  Log.e("ASD"," Style parsing failed");
-
-                // For showing a move to my location button
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mMap.setMyLocationEnabled(true);
                 }
@@ -144,8 +141,13 @@ public class Tab1MapsView extends Fragment  {
                 for(int i = 0; i < storeID.size();i++)
                 {
 
-                    userLocation.setLatitude(userLatLng.latitude);
-                    userLocation.setLongitude(userLatLng.longitude);
+                    try {
+                        userLocation.setLatitude(userLatLng.latitude);
+                        userLocation.setLongitude(userLatLng.longitude);
+                    }catch (NullPointerException e )
+                    {
+                        Log.e("ASD","" + e);
+                    }
 
                     distanceToMarker = markerLocation.distanceTo(userLocation);
 
@@ -177,8 +179,6 @@ public class Tab1MapsView extends Fragment  {
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
-
-
 
 
             return rootView;
