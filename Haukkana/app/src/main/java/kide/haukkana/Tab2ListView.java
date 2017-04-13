@@ -33,8 +33,11 @@ import java.util.List;
 
 public class Tab2ListView extends Fragment  {
 
+    ArrayList<Integer> storeID = new ArrayList<>();
     ArrayList<String> storeName = new ArrayList<>();
-    ArrayList<String> storeInfo = new ArrayList<>();
+    ArrayList<Double> storeLan = new ArrayList<>();
+    ArrayList<Double> storeLng = new ArrayList<>();
+    ArrayList<Integer> storeInfo = new ArrayList<>();
     ListView listView;
     Context context;
     FragmentManager fragmentManager;
@@ -46,13 +49,15 @@ public class Tab2ListView extends Fragment  {
         View rootView = inflater.inflate(R.layout.tab2listview, container, false);
 
         //Add stuff to Arraylists
-        storeName.add("Prisma Linnanmaa");
+        /*storeName.add("Prisma Linnanmaa");
         storeInfo.add("2.2km Away");
         storeName.add("S-Market Kaketsu");
         storeInfo.add("1.0km Away");
         storeName.add("Prisma Limingantulli");
         storeInfo.add("19.2km Away");
+*/
 
+        testDataGet();
 
         //Show listView
         listView = (ListView) rootView.findViewById(R.id.listView);
@@ -64,10 +69,9 @@ public class Tab2ListView extends Fragment  {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
 
-                Intent intent = new Intent(getActivity(), ShopinfoActivity.class);
-                String message = "abc";
-                intent.putExtra("Shit", message);
-                startActivity(intent);
+                Intent intent1 = new Intent(getActivity().getApplicationContext(), ShopinfoActivity.class);
+                intent1.putExtra("shopID", ""+ position);
+                startActivity(intent1);
             }
         });
 
@@ -77,6 +81,16 @@ public class Tab2ListView extends Fragment  {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = activity;
+    }
+
+    public void testDataGet(){
+        BackEndCommunication BC = new BackEndCommunication();
+
+        storeInfo = BC.storeID;
+        storeLng = BC.storeLng;
+        storeLan = BC.storeLan;
+        storeName = BC.storeName;
+
     }
 }
 

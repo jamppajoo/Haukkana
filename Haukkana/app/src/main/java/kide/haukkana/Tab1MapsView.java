@@ -66,10 +66,7 @@ public class Tab1MapsView extends Fragment  {
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
-
-
-
-            testDataGet();
+        testDataGet();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -83,7 +80,6 @@ public class Tab1MapsView extends Fragment  {
             Location location = service.getLastKnownLocation(provider);
             userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
 
-            Log.e("ASD",userLatLng.toString());
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -131,7 +127,6 @@ public class Tab1MapsView extends Fragment  {
                             distanceToMarker = markerLocation.distanceTo(userLocation);
 
                             markers.get(i).setSnippet(String.format("%.2f", distanceToMarker / 1000) + " km");
-                            Log.e("ASD", userLatLng.toString());
                         }
 
                     }
@@ -154,7 +149,6 @@ public class Tab1MapsView extends Fragment  {
 
                     distanceToMarker = markerLocation.distanceTo(userLocation);
 
-                    Log.e("ASD"," distance: " + distanceToMarker);
 
                     LatLng Test = new LatLng(storeLan.get(i), storeLng.get(i));
 
