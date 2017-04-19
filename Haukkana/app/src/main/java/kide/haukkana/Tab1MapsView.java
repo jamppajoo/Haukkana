@@ -54,6 +54,7 @@ public class Tab1MapsView extends Fragment  {
     Location userLocation = new Location("");
     Location markerLocation = new Location("");
 
+
     double distanceToMarker;
 
 
@@ -62,7 +63,13 @@ public class Tab1MapsView extends Fragment  {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1mapsview, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED){
+
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            }
+
+
+            mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -104,7 +111,7 @@ public class Tab1MapsView extends Fragment  {
                     mMap.setMyLocationEnabled(true);
                 }
                 else {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     // Show rationale and request permission.
                     mMap.setMyLocationEnabled(true);
 
@@ -113,7 +120,10 @@ public class Tab1MapsView extends Fragment  {
                 GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange (Location location) {
-                        userLatLng = new LatLng (location.getLatitude(), location.getLongitude());
+                        try {
+
+                            userLatLng = new LatLng (location.getLatitude(), location.getLongitude());
+                        }catch (NullPointerException e){}
                         for(int i = 0; i < storeID.size();i++) {
 
                             markerLocation.setLatitude(storeLan.get(i));
