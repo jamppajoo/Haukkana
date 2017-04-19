@@ -49,6 +49,7 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
     ArrayList<Integer> storeTypeID = new ArrayList<>();
+    ArrayList<Double> storeDistance = new ArrayList<>();
     ArrayList<Marker> markers = new ArrayList<>();
 
     LatLng userLatLng;
@@ -139,6 +140,7 @@ public class Tab1MapsView extends Fragment  {
                             distanceToMarker = markerLocation.distanceTo(userLocation);
 
                             markers.get(i).setSnippet(String.format("%.2f", distanceToMarker / 1000) + " km");
+                            //testDistancePush(storeID.get(i),distanceToMarker);
                         }
 
                     }
@@ -164,12 +166,14 @@ public class Tab1MapsView extends Fragment  {
                         Log.e("ASD","" + e);
                     }
 
+
                     distanceToMarker = markerLocation.distanceTo(userLocation);
+
 
                     LatLng markerLatLng = new LatLng(storeLan.get(i), storeLng.get(i));
 
                     BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.haukkana_ylavalikko);
-                    ;
+
 
                     switch (storeTypeID.get(i)){
                         case 1:
@@ -257,5 +261,9 @@ public class Tab1MapsView extends Fragment  {
         storeName = BC.storeName;
         storeTypeID = BC.storeTypeID;
 
+    }
+    public void testDistancePush(int ID, double distance){
+        BackEndCommunication BC = new BackEndCommunication();
+        BC.storeDistance.set(ID,distance);
     }
 }

@@ -14,6 +14,7 @@ public class BackEndCommunication {
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
     ArrayList<Integer> storeTypeID = new ArrayList<>();
+    ArrayList<Double> storeDistance = new ArrayList<>();
 
 
     public BackEndCommunication(){
@@ -114,5 +115,8 @@ public class BackEndCommunication {
 
         //return store longitude with given ID
         return storeLng.get(ID);
+    }
+    public Double returnStoreDistance(int ID){
+        return  storeDistance.get(ID);
     }
 }

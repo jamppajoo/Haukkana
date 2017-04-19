@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class Tab2ListView extends Fragment  {
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
     ArrayList<Integer> storeInfo = new ArrayList<>();
+    ArrayList<Double> storeDistance = new ArrayList<>();
     ListView listView;
     Context context;
     FragmentManager fragmentManager;
@@ -90,6 +92,7 @@ public class Tab2ListView extends Fragment  {
         storeLng = BC.storeLng;
         storeLan = BC.storeLan;
         storeName = BC.storeName;
+        storeDistance = BC.storeDistance;
 
     }
 }
