@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,6 +48,7 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<String> storeName = new ArrayList<>();
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
+    ArrayList<Integer> storeTypeID = new ArrayList<>();
     ArrayList<Marker> markers = new ArrayList<>();
 
     LatLng userLatLng;
@@ -68,6 +70,9 @@ public class Tab1MapsView extends Fragment  {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
             }
 
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Finding user location", Toast.LENGTH_LONG);
+            toast.show();
+
 
             mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -84,7 +89,7 @@ public class Tab1MapsView extends Fragment  {
             LocationManager service = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
             Criteria criteria = new Criteria();
             String provider = service.getBestProvider(criteria, false);
-            Location location = service.getLastKnownLocation(provider);
+            final Location location = service.getLastKnownLocation(provider);
             try{
                 userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
             }catch (NullPointerException e){
@@ -161,13 +166,29 @@ public class Tab1MapsView extends Fragment  {
 
                     distanceToMarker = markerLocation.distanceTo(userLocation);
 
+                    LatLng markerLatLng = new LatLng(storeLan.get(i), storeLng.get(i));
 
-                    LatLng Test = new LatLng(storeLan.get(i), storeLng.get(i));
+                    BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.haukkana_ylavalikko);
+                    ;
+
+                    switch (storeTypeID.get(i)){
+                        case 1:
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.skaupat_maps_87x100);
+                            break;
+                        case 2:
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.kmarket_maps_87x100);
+                            break;
+                        case 3:
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.lidl_maps_87x100);
+                            break;
+
+                    }
+
 
                    Marker marker =  googleMap.addMarker(new MarkerOptions()
-                           .position(Test).title(storeName.get(i))
+                           .position(markerLatLng).title(storeName.get(i))
                            .snippet(String.format("%.2f", distanceToMarker / 1000)+ " km")
-                           .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_test2)));
+                           .icon(markerIcon));
                     marker.setTag(storeID.get(i));
                     markers.add(marker);
 
@@ -186,7 +207,16 @@ public class Tab1MapsView extends Fragment  {
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(oulu).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                if(userLocation != null)
+                {
+                    CameraPosition.Builder builder = new CameraPosition.Builder();
+                    builder.zoom(14);
+                    builder.target(userLatLng);
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+                }
+                else{
+                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
             }
         });
 
@@ -225,6 +255,7 @@ public class Tab1MapsView extends Fragment  {
         storeLng = BC.storeLng;
         storeLan = BC.storeLan;
         storeName = BC.storeName;
+        storeTypeID = BC.storeTypeID;
 
     }
 }
