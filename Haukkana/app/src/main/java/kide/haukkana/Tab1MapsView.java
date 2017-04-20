@@ -52,7 +52,7 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<Double> storeDistance = new ArrayList<>();
     ArrayList<Marker> markers = new ArrayList<>();
 
-    LatLng userLatLng;
+    LatLng userLatLng  = new LatLng(65.012360, 25.468160);
 
     Location userLocation = new Location("");
     Location markerLocation = new Location("");
@@ -177,13 +177,13 @@ public class Tab1MapsView extends Fragment  {
 
                     switch (storeTypeID.get(i)){
                         case 1:
-                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.skaupat_maps_87x100);
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.skaupat_maps_44x50);
                             break;
                         case 2:
-                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.kmarket_maps_87x100);
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.kmarket_maps_44x50);
                             break;
                         case 3:
-                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.lidl_maps_87x100);
+                            markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.lidl_maps_44x50);
                             break;
 
                     }
@@ -211,7 +211,7 @@ public class Tab1MapsView extends Fragment  {
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(oulu).zoom(12).build();
-                if(userLocation != null)
+                if(userLocation != null && googleMap != null)
                 {
                     CameraPosition.Builder builder = new CameraPosition.Builder();
                     builder.zoom(14);
@@ -221,6 +221,7 @@ public class Tab1MapsView extends Fragment  {
                 else{
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
+
             }
         });
 
