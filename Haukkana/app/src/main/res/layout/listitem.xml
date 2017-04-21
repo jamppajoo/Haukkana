@@ -4,19 +4,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="1" />
+
     <TextView
         android:id="@+id/itemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Item"
-        android:textColor="@color/itemListColor"/>
+        android:textColor="@color/itemListColor"
+        android:textSize="20sp" />
+
 
     <TextView
         android:id="@+id/subItemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_weight="1"
         android:text="subitem"
-        android:textColor="@color/itemListColor"/>
+        android:textColor="@color/subItemListColor"
+        android:textSize="16sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_weight="1" />
 </LinearLayout>

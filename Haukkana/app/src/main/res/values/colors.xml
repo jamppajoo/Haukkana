@@ -2,7 +2,9 @@
 <resources>
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <color name="colorPrimary">#00998a</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#00998a</color>
     <color name="colorAccent">#FF4081</color>
     <color name="itemListColor">#000000</color>
+    <color name="subItemListColor">#656565</color>
 </resources>
+

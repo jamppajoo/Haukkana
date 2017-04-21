@@ -39,7 +39,7 @@ public class Tab2ListView extends Fragment  {
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
     ArrayList<Integer> storeInfo = new ArrayList<>();
-    ArrayList<Double> storeDistance = new ArrayList<>();
+    ArrayList<String> storeDistance = new ArrayList<>();
     ListView listView;
     Context context;
     FragmentManager fragmentManager;
@@ -50,21 +50,13 @@ public class Tab2ListView extends Fragment  {
 
         View rootView = inflater.inflate(R.layout.tab2listview, container, false);
 
-        //Add stuff to Arraylists
-        /*storeName.add("Prisma Linnanmaa");
-        storeInfo.add("2.2km Away");
-        storeName.add("S-Market Kaketsu");
-        storeInfo.add("1.0km Away");
-        storeName.add("Prisma Limingantulli");
-        storeInfo.add("19.2km Away");
-*/
-
         testDataGet();
+
 
         //Show listView
         listView = (ListView) rootView.findViewById(R.id.listView);
         //Set adapter to listview and send ArrayList to it
-        listView.setAdapter(new ImageAdapter(getActivity().getApplicationContext(),storeName,storeInfo));
+        listView.setAdapter(new ImageAdapter(getActivity().getApplicationContext(),storeName, storeDistance));
 
         //If listview item is clicked, start new activity and send temp messages to it
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,6 +85,9 @@ public class Tab2ListView extends Fragment  {
         storeLan = BC.storeLan;
         storeName = BC.storeName;
         storeDistance = BC.storeDistance;
+        if(storeDistance.size() <= 0)
+            for (int i = 0; i < storeName.size(); i++)
+                storeDistance.add("Location Error");
 
     }
 }
@@ -101,15 +96,18 @@ public class Tab2ListView extends Fragment  {
 class ImageAdapter extends BaseAdapter {
 
     private Context context;
-    private final ArrayList storeName;
-    private final ArrayList storeInfo;
+    private final ArrayList<String> storeName;
+    private final ArrayList<String> storeInfo;
 
-    public ImageAdapter(Context context, ArrayList storeName, ArrayList storeInfo)
+    public ImageAdapter(Context context, ArrayList<String> storeName, ArrayList<String> storeInfo)
     {
 
         this.context = context;
         this.storeName = storeName;
         this.storeInfo = storeInfo;
+        BackEndCommunication BD = new BackEndCommunication();
+
+
 
     }
 
@@ -131,8 +129,10 @@ class ImageAdapter extends BaseAdapter {
             TextView finalStoreName = (TextView) linearLayout.findViewById(R.id.itemTextView);
             TextView finalStoreInfo = (TextView) linearLayout.findViewById(R.id.subItemTextView);
 
-            finalStoreName.setText(storeName.get(position).toString());
-            finalStoreInfo.setText(storeInfo.get(position).toString());
+            finalStoreName.setText(storeName.get(position));
+            finalStoreInfo.setText(storeInfo.get(position));
+
+
         }
         else
             linearLayout = (View) convertView;

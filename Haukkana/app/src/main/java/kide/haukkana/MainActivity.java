@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "MapsView";
+                    return "Kartta";
                 case 1:
-                    return "ListView";
+                    return "Kaupat";
             }
             return null;
         }

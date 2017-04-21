@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Debug;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -49,7 +48,7 @@ public class Tab1MapsView extends Fragment  {
     ArrayList<Double> storeLan = new ArrayList<>();
     ArrayList<Double> storeLng = new ArrayList<>();
     ArrayList<Integer> storeTypeID = new ArrayList<>();
-    ArrayList<Double> storeDistance = new ArrayList<>();
+    ArrayList<String> storeDistance = new ArrayList<>();
     ArrayList<Marker> markers = new ArrayList<>();
 
     LatLng userLatLng  = new LatLng(65.012360, 25.468160);
@@ -57,9 +56,8 @@ public class Tab1MapsView extends Fragment  {
     Location userLocation = new Location("");
     Location markerLocation = new Location("");
 
-
-    double distanceToMarker;
-
+    String distanceToMarker = "Location error";
+    boolean locationFound = false;
 
         @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,6 +124,7 @@ public class Tab1MapsView extends Fragment  {
                 GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange (Location location) {
+                        locationFound = true;
                         try {
 
                             userLatLng = new LatLng (location.getLatitude(), location.getLongitude());
@@ -137,11 +136,16 @@ public class Tab1MapsView extends Fragment  {
                             userLocation.setLatitude(userLatLng.latitude);
                             userLocation.setLongitude(userLatLng.longitude);
 
-                            distanceToMarker = markerLocation.distanceTo(userLocation);
+                            if(locationFound)
+                                distanceToMarker = String.format("%.2f",markerLocation.distanceTo(userLocation) /1000) + " km";
 
-                            markers.get(i).setSnippet(String.format("%.2f", distanceToMarker / 1000) + " km");
+                            storeDistance.set(i, distanceToMarker);
+
+                            markers.get(i).setSnippet(distanceToMarker);
                             //testDistancePush(storeID.get(i),distanceToMarker);
+                            testDistancePush();
                         }
+
 
                     }
                 };
@@ -167,7 +171,10 @@ public class Tab1MapsView extends Fragment  {
                     }
 
 
-                    distanceToMarker = markerLocation.distanceTo(userLocation);
+                    if(locationFound)
+                        distanceToMarker = String.format("%.2f",markerLocation.distanceTo(userLocation) /1000) + " km";
+
+                    storeDistance.add(distanceToMarker);
 
 
                     LatLng markerLatLng = new LatLng(storeLan.get(i), storeLng.get(i));
@@ -191,7 +198,7 @@ public class Tab1MapsView extends Fragment  {
 
                    Marker marker =  googleMap.addMarker(new MarkerOptions()
                            .position(markerLatLng).title(storeName.get(i))
-                           .snippet(String.format("%.2f", distanceToMarker / 1000)+ " km")
+                           .snippet(distanceToMarker)
                            .icon(markerIcon));
                     marker.setTag(storeID.get(i));
                     markers.add(marker);
@@ -263,8 +270,11 @@ public class Tab1MapsView extends Fragment  {
         storeTypeID = BC.storeTypeID;
 
     }
-    public void testDistancePush(int ID, double distance){
-        BackEndCommunication BC = new BackEndCommunication();
-        BC.storeDistance.set(ID,distance);
+    public ArrayList<String> testDistanceGet(){
+        return storeDistance;
+    }
+    public void testDistancePush(){
+        Tab2ListView tab2 = new Tab2ListView();
+        tab2.storeDistance = storeDistance;
     }
 }
