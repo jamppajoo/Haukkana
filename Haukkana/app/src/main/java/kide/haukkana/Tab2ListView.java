@@ -84,7 +84,6 @@ public class Tab2ListView extends Fragment  {
         storeLng = BC.storeLng;
         storeLan = BC.storeLan;
         storeName = BC.storeName;
-        storeDistance = BC.storeDistance;
         if(storeDistance.size() <= 0)
             for (int i = 0; i < storeName.size(); i++)
                 storeDistance.add("Location Error");
