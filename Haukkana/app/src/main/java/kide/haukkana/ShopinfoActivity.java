@@ -35,6 +35,9 @@ public class ShopinfoActivity extends AppCompatActivity {
 
 
 
+        TextView storeName = (TextView) findViewById(R.id.shopName);
+        storeName.setText(shopName);
+
         ShopOffers SO = new ShopOffers();
         storeOffer = SO.returnOffersArraylist(shopID);
 
@@ -44,8 +47,6 @@ public class ShopinfoActivity extends AppCompatActivity {
                 (this, android.R.layout.simple_list_item_1, storeOffer);
         listView.setAdapter(arrayAdapter);
 
-        TextView storeName = (TextView) findViewById(R.id.shopName);
-        storeName.setText(shopName);
 
     }
 
