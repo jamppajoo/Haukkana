@@ -1,5 +1,6 @@
 package kide.haukkana;
 
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class ShopinfoActivity extends AppCompatActivity {
 
 
         TextView storeName = (TextView) findViewById(R.id.shopName);
+        storeName.setPaintFlags(storeName.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
         storeName.setText(shopName);
 
         ShopOffers SO = new ShopOffers();
